@@ -1,3 +1,4 @@
+import React from 'react';
 import { Box, Paper, Theme } from '@mui/material';
 import PostsView from './views/PostView';
 import { makeStyles } from '@mui/styles';

@@ -3,7 +3,10 @@ import { ApolloClient, ApolloProvider, HttpLink, InMemoryCache } from '@apollo/c
 import { ThemeProvider } from '@mui/styles';
 import { createTheme } from '@mui/material';
 import Posts from './Posts';
+import Login from './Login';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute';
+import { AuthProvider } from './context/AuthContext';
 
 // Create an HttpLink to the GraphQL Zero endpoint
 const httpLink = new HttpLink({
@@ -20,14 +23,17 @@ const theme = createTheme();
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <ApolloProvider client={apolloClient}>
-        <Router>
-          {/* Entry point for routes */}
-          <Routes>
-            <Route path="/" element={<Posts />} />
-          </Routes>
-        </Router>
-      </ApolloProvider>
+      <AuthProvider>
+        <ApolloProvider client={apolloClient}>
+          <Router>
+            {/* Entry point for routes */}
+            <Routes>
+              <Route path="*" element={<ProtectedRoute element={<Posts />} path="/" />} />
+              <Route path="/login" element={<Login />} />
+            </Routes>
+          </Router>
+        </ApolloProvider>
+      </AuthProvider>
     </ThemeProvider>
   );
 }
